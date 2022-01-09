@@ -3,16 +3,42 @@ import {
   ParamListBase,
   useNavigation,
 } from '@react-navigation/native';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
+import {axios} from '../../config';
+
 import {colors} from '../../constants';
 import {useAppContext} from '../../contexts';
+import {useAuthContext} from '../../contexts/authProvider';
 
 export default function HomeHeader() {
   const navigation = useNavigation<NavigationProp<ParamListBase>>();
-  const {cart}: any = useAppContext();
+  const {cart, setCart, setCartTotal}: any = useAppContext();
+  const authContext = useAuthContext();
+
+  useEffect(() => {
+    (async function () {
+      try {
+        const res = await axios.post('/cart', {
+          _id: authContext?.currentUser?.user._id,
+        });
+        const data = res.data;
+        setCart(data);
+
+        let sum = 0;
+        for (let i = 0; i < data.length; i++) {
+          sum += data[i].price;
+        }
+        setCartTotal(sum);
+      } catch (err: any) {
+        console.log(err.message);
+      }
+    })();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cart]);
 
   return (
     <View style={styles.header}>

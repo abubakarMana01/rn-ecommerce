@@ -1,11 +1,5 @@
-import {
-  NavigationProp,
-  ParamListBase,
-  useNavigation,
-} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
 import {
-  Alert,
   Dimensions,
   Image,
   StyleSheet,
@@ -15,45 +9,72 @@ import {
   View,
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {axios} from '../config';
+import {
+  NavigationProp,
+  ParamListBase,
+  useNavigation,
+} from '@react-navigation/native';
 
+import {axios} from '../config';
 import {colors} from '../constants';
 import {useAuthContext} from '../contexts/authProvider';
 
-export default function SingleProduct({product, likedProducts}: any) {
+export default function SingleProduct({
+  product,
+  likedProducts,
+  setLikedProducts,
+}: any) {
   const navigation: NavigationProp<ParamListBase> = useNavigation();
   const authContext = useAuthContext();
 
   const [isLiked, setIsLiked] = useState(false);
 
-  const checkIfLiked = likedProducts.find((item: any) => {
-    return item === product.id;
-  });
-
   useEffect(() => {
+    const checkIfLiked = likedProducts.find((item: any) => {
+      return item === product.id;
+    });
+
     if (checkIfLiked) {
       setIsLiked(true);
     } else {
       setIsLiked(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLiked]);
+  }, []);
 
   async function handleLike() {
-    setIsLiked(!isLiked);
+    if (isLiked) {
+      try {
+        setIsLiked(false);
+        const res = await axios.put('/likedItems/removeFromLikes', {
+          _id: authContext?.currentUser?.user._id,
+          productId: product.id,
+        });
+
+        ToastAndroid.show('Removed from likes', ToastAndroid.SHORT);
+        setLikedProducts(res.data.user.likedProducts);
+        return;
+      } catch (err: any) {
+        setIsLiked(true);
+        console.log(err.response);
+      }
+    }
 
     try {
-      const res = await axios.put('/likedItems', {
+      setIsLiked(true);
+
+      const res = await axios.put('/likedItems/addToLikes', {
         _id: authContext?.currentUser?.user._id,
         productId: product.id,
       });
+
       ToastAndroid.show('Added to likes', ToastAndroid.SHORT);
-      console.log(res.data);
+      setLikedProducts(res.data.user.likedProducts);
     } catch (err: any) {
       setIsLiked(false);
-      if (err.response) {
-        Alert.alert('Error', err.response.data.error);
-        Alert.alert('Error', 'Failed to add to likes');
+
+      if (err.response.data.error) {
+        ToastAndroid.show('Product already in likes', ToastAndroid.SHORT);
       }
       console.log(err.message);
     }

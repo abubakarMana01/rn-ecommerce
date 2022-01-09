@@ -1,9 +1,11 @@
 import React from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/Ionicons';
+import {axios} from '../config';
 
 import {colors} from '../constants';
 import {useAppContext} from '../contexts';
+import {useAuthContext} from '../contexts/authProvider';
 
 export interface CartItemProps {
   product: {
@@ -15,12 +17,25 @@ export interface CartItemProps {
 }
 
 export default function CartItem({product}: CartItemProps) {
-  const {cart, setCart, setCartTotal}: any = useAppContext();
+  const authContext = useAuthContext();
+  const {setCart, setCartTotal}: any = useAppContext();
 
-  const handleDelete = (id: string) => {
-    setCart(cart.filter((item: {id: string}) => item.id !== id));
+  const handleDelete = async (id: string) => {
+    try {
+      const res = await axios.delete(
+        '/cart/' + authContext?.currentUser?.user._id + '/' + id,
+      );
+      const data = res.data;
+      setCart(data);
+      setCartTotal((prev: number) => prev - Number(product.price));
+    } catch (err: any) {
+      console.log(err.response.data);
+      console.log(err.message);
+    }
 
-    setCartTotal((prev: number) => (prev - Number(product.price)).toFixed(2));
+    // setCart(cart.filter((item: {id: string}) => item.id !== id));
+
+    // setCartTotal((prev: number) => (prev - Number(product.price)).toFixed(2));
   };
 
   return (

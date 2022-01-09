@@ -17,7 +17,8 @@ import {
   ScreenTop,
 } from '../components';
 import {colors} from '../constants';
-import {useAppContext} from '../contexts';
+import {axios} from '../config';
+import {useAuthContext} from '../contexts/authProvider';
 
 interface RouteParamsType {
   image: string;
@@ -27,25 +28,25 @@ interface RouteParamsType {
 }
 
 export default function ProductDetails() {
-  const {cart, setCart}: any = useAppContext();
+  const authContext = useAuthContext();
 
   const route = useRoute<RouteProp<ParamListBase, string>>();
   const {product, isLiked, setIsLiked}: any | RouteParamsType = route.params;
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
     try {
-      const itemExists = cart.find((item: any) => item.id === product.id);
-
-      if (itemExists) {
-        return ToastAndroid.show(
-          'Product already in cart!',
-          ToastAndroid.SHORT,
-        );
-      }
-
-      setCart((currentCart: []) => [...currentCart, {...product}]);
+      await axios.put('/cart', {
+        _id: authContext?.currentUser?.user._id,
+        product,
+      });
       ToastAndroid.show('Added to cart!', ToastAndroid.SHORT);
     } catch (err: any) {
+      if (err.response.data.error) {
+        console.log(err.response.data.error);
+        err.response.data.error === 'Product already in cart'
+          ? ToastAndroid.show('Item already in cart', ToastAndroid.SHORT)
+          : ToastAndroid.show('Failed to add to cart!', ToastAndroid.SHORT);
+      }
       console.log(err.message);
     }
   };

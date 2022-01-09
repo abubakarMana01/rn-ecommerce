@@ -19,9 +19,9 @@ export default function Products({isLoading, products}: ProductsProps) {
   const [likedProducts, setLikedProducts] = useState([]);
 
   useEffect(() => {
-    async function getLikedItems() {
+    (async function () {
       try {
-        const res = await axios.post('/likedItems', {
+        const res = await axios.post('/likedItems/', {
           _id: authContext?.currentUser?.user._id,
         });
         setLikedProducts(res.data);
@@ -31,9 +31,8 @@ export default function Products({isLoading, products}: ProductsProps) {
         }
         console.log(err.message);
       }
-    }
+    })();
 
-    getLikedItems();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [products]);
 
@@ -48,7 +47,11 @@ export default function Products({isLoading, products}: ProductsProps) {
           numColumns={2}
           data={products}
           renderItem={({item}) => (
-            <SingleProduct likedProducts={likedProducts} product={item} />
+            <SingleProduct
+              likedProducts={likedProducts}
+              setLikedProducts={setLikedProducts}
+              product={item}
+            />
           )}
         />
       )}

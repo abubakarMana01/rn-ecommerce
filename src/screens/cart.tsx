@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import {
   NavigationProp,
   ParamListBase,
@@ -48,7 +47,7 @@ export default function Cart() {
               source={require('../assets/animations/no-item-cart.json')}
               autoPlay
               loop
-              style={{height: 200, width: 200}}
+              style={styles.lottieView}
             />
             <Text style={styles.noItem}>Your cart is empty</Text>
             <View style={styles.notItemsButtonContainer}>
@@ -73,7 +72,7 @@ export default function Cart() {
             </View>
             <View style={styles.checkoutPricesContainer}>
               <Text style={styles.title}>Shipping:</Text>
-              <Text style={styles.price}>${shippingFee.toFixed(2)}</Text>
+              <Text style={styles.price}>${shippingFee}</Text>
             </View>
 
             <View style={styles.separator} />
@@ -91,7 +90,12 @@ export default function Cart() {
                 leftThreshold={150}
                 renderLeftActions={LeftSwipeActions}
                 onSwipeableLeftOpen={swipeFromLeftOpen}>
-                <View style={[styles.button, {opacity: +total <= 0 ? 0.5 : 1}]}>
+                <View
+                  style={[
+                    styles.button,
+                    // eslint-disable-next-line react-native/no-inline-styles
+                    {opacity: +total <= 0 ? 0.5 : 1},
+                  ]}>
                   <Text style={styles.buttonTitle}>Swipe to checkout</Text>
                   <AntDesign
                     name="doubleright"
@@ -121,6 +125,10 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
     paddingRight: 3,
     flex: 1,
+  },
+  lottieView: {
+    height: 200,
+    width: 200,
   },
   noItemContainer: {
     justifyContent: 'center',
