@@ -21,7 +21,7 @@ export default function NoInternet() {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    backgroundColor: colors.primary,
+    backgroundColor: colors.red,
   },
   text: {
     padding: 5,

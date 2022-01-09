@@ -50,7 +50,7 @@ export default function Cart() {
               loop
               style={{height: 200, width: 200}}
             />
-            <Text style={styles.noItem}>No items in cart</Text>
+            <Text style={styles.noItem}>Your cart is empty</Text>
             <View style={styles.notItemsButtonContainer}>
               <Button
                 title="Continue Shopping"
