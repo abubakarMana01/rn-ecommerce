@@ -1,6 +1,8 @@
-import React from 'react';
-import {FlatList, StyleSheet, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {Alert, FlatList, StyleSheet, View} from 'react-native';
 import {Loader} from '.';
+import {axios} from '../config';
+import {useAuthContext} from '../contexts/authProvider';
 
 import SingleProduct from './singleProduct';
 
@@ -13,6 +15,28 @@ interface ProductsProps {
 }
 
 export default function Products({isLoading, products}: ProductsProps) {
+  const authContext = useAuthContext();
+  const [likedProducts, setLikedProducts] = useState([]);
+
+  useEffect(() => {
+    async function getLikedItems() {
+      try {
+        const res = await axios.post('/likedItems', {
+          _id: authContext?.currentUser?.user._id,
+        });
+        setLikedProducts(res.data);
+      } catch (err: any) {
+        if (err.response) {
+          Alert.alert('Error', err.response.data.error);
+        }
+        console.log(err.message);
+      }
+    }
+
+    getLikedItems();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [products]);
+
   return (
     <View style={styles.container}>
       {isLoading ? (
@@ -23,7 +47,9 @@ export default function Products({isLoading, products}: ProductsProps) {
           columnWrapperStyle={styles.flatListColumnWrapperStyle}
           numColumns={2}
           data={products}
-          renderItem={({item}) => <SingleProduct product={item} />}
+          renderItem={({item}) => (
+            <SingleProduct likedProducts={likedProducts} product={item} />
+          )}
         />
       )}
     </View>

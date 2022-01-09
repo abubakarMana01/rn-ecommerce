@@ -14,8 +14,10 @@ export default function ProfileTop() {
       <View style={styles.imageContainer}>
         <Ionicons name="person" size={60} color={colors.gray} />
       </View>
-      <Text style={styles.username}>{authContext?.currentUser?.username}</Text>
-      <Text style={styles.email}>{authContext?.currentUser?.email}</Text>
+      <Text style={styles.username}>
+        {authContext?.currentUser?.user?.username}
+      </Text>
+      <Text style={styles.email}>{authContext?.currentUser?.user?.email}</Text>
       <TouchableOpacity style={styles.button}>
         <Text style={styles.buttonText}>Edit Profile</Text>
         <MaterialCommunityIcons

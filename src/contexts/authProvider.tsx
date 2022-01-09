@@ -1,7 +1,7 @@
 import React, {createContext, useContext, useState} from 'react';
 
 export type AuthContextTypes = {
-  currentUser?: {username: string; _id: string; email: string} | null;
+  currentUser?: {user: {username: string; _id: string; email: string}} | null;
   setCurrentUser: Function;
 };
 

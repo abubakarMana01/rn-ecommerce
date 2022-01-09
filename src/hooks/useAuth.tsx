@@ -57,7 +57,8 @@ export default function useAuth() {
       setIsLoading(false);
       await storeToken(res.data.token);
       const decode: any = jwtDecode(res.data.token);
-      authContext?.setCurrentUser(decode.user);
+      console.log(decode);
+      authContext?.setCurrentUser(decode);
     } catch (err: any) {
       setIsLoading(false);
       if (err.response) {
