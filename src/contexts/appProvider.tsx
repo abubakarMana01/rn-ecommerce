@@ -25,7 +25,7 @@ export default function AppProvider({children}: {children: React.ReactNode}) {
       try {
         const res = await fetch('https://fakestoreapi.com/products/?limit=3');
         const data = await res.json();
-        setCart(data);
+        // setCart(data);
 
         let sum = 0;
         for (let i = 0; i < data.length; i++) {
