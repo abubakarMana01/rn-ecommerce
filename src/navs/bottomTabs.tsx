@@ -3,12 +3,11 @@ import {TouchableOpacity} from 'react-native';
 import {Dimensions, StyleSheet, View} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import {colors} from '../constants';
-import {Home, Profile} from '../screens';
+import {Home, Likes, Profile} from '../screens';
 import {BottomTabsScreen, Loader} from '../components';
 
 const Tab = createBottomTabNavigator();
@@ -59,22 +58,24 @@ export default function BottomTabs() {
           ),
         }}
       />
-      <Tab.Screen
-        component={Test}
-        name="Orders"
+      {/* <Tab.Screen
+        component={Likes}
+        name="Likes"
         options={{
+          headerShown: true,
+          headerTitle: 'Saved items',
           tabBarIcon: ({focused, color, size}) => (
             <Icon focused={focused}>
-              <Feather
+              <AntDesign
                 style={styles.icon}
-                name="shopping-bag"
+                name="hearto"
                 size={size}
                 color={color}
               />
             </Icon>
           ),
         }}
-      />
+      /> */}
       <Tab.Screen
         component={Profile}
         name="Profile"

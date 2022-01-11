@@ -4,7 +4,7 @@ import {
   useNavigation,
 } from '@react-navigation/native';
 import React, {useEffect} from 'react';
-import {FlatList, StyleSheet, Text, View} from 'react-native';
+import {FlatList, Pressable, StyleSheet, Text, View} from 'react-native';
 import LottieView from 'lottie-react-native';
 import {Swipeable} from 'react-native-gesture-handler';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -22,7 +22,7 @@ export default function Cart() {
   useEffect(() => {
     let sum = 0;
     for (let i = 0; i < cart.length; i++) {
-      sum += cart[i].price;
+      sum += cart[i].price * 413;
     }
     setCartTotal(sum.toFixed(2));
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -68,11 +68,11 @@ export default function Cart() {
           <View style={styles.checkoutContainer}>
             <View style={styles.checkoutPricesContainer}>
               <Text style={styles.title}>Sub total:</Text>
-              <Text style={styles.price}>${cartTotal}</Text>
+              <Text style={styles.price}>₦{cartTotal}</Text>
             </View>
             <View style={styles.checkoutPricesContainer}>
               <Text style={styles.title}>Shipping:</Text>
-              <Text style={styles.price}>${shippingFee}</Text>
+              <Text style={styles.price}>₦{shippingFee}</Text>
             </View>
 
             <View style={styles.separator} />
@@ -80,7 +80,7 @@ export default function Cart() {
             <View style={styles.checkoutPricesContainer}>
               <Text style={styles.title}>Bag total:</Text>
               <Text style={[styles.price, {color: colors.brown}]}>
-                ${total}
+                ₦{total}
               </Text>
             </View>
 
@@ -90,7 +90,8 @@ export default function Cart() {
                 leftThreshold={150}
                 renderLeftActions={LeftSwipeActions}
                 onSwipeableLeftOpen={swipeFromLeftOpen}>
-                <View
+                <Pressable
+                  onPress={swipeFromLeftOpen}
                   style={[
                     styles.button,
                     // eslint-disable-next-line react-native/no-inline-styles
@@ -102,7 +103,7 @@ export default function Cart() {
                     size={27}
                     color={colors.white}
                   />
-                </View>
+                </Pressable>
               </Swipeable>
             </View>
           </View>

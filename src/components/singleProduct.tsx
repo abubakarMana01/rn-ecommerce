@@ -106,7 +106,7 @@ export default function SingleProduct({
         <Text numberOfLines={1} style={styles.title}>
           {product.title}
         </Text>
-        <Text style={styles.price}>$ {product.price}</Text>
+        <Text style={styles.price}>₦{(product.price * 413).toFixed(2)}</Text>
       </View>
     </TouchableOpacity>
   );

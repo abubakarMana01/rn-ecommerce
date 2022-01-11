@@ -109,7 +109,7 @@ export default function ProductDetails() {
       <ScreenBottom>
         <View style={styles.priceContainer}>
           <Text style={styles.subTotal}>Sub total</Text>
-          <Text style={styles.price}>${product.price}</Text>
+          <Text style={styles.price}>₦{(product.price * 413).toFixed(2)}</Text>
         </View>
         <Button title="Add to cart" onPress={() => handleAddToCart()} />
       </ScreenBottom>

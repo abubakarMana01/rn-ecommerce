@@ -22,21 +22,23 @@ export default function CartItem({product}: CartItemProps) {
 
   const handleDelete = async (id: string) => {
     try {
+      // setCart((prev: []) =>
+      //   prev.filter((item: {id: string}) => item.id !== id),
+      // );
       const res = await axios.delete(
         '/cart/' + authContext?.currentUser?.user._id + '/' + id,
       );
-      const data = res.data;
-      setCart(data);
+
+      setCart(res.data);
       setCartTotal((prev: number) => prev - Number(product.price));
     } catch (err: any) {
+      setCart((prev: []) => [...prev, product]);
       console.log(err.response.data);
       console.log(err.message);
     }
-
-    // setCart(cart.filter((item: {id: string}) => item.id !== id));
-
-    // setCartTotal((prev: number) => (prev - Number(product.price)).toFixed(2));
   };
+
+  const price = (+product.price * 413).toFixed(2);
 
   return (
     <View style={styles.container}>
@@ -56,7 +58,7 @@ export default function CartItem({product}: CartItemProps) {
           <Text style={styles.size}>L</Text>
         </View>
 
-        <Text style={styles.price}>${product.price}</Text>
+        <Text style={styles.price}>₦{price}</Text>
 
         <View style={styles.bottom}>
           <View style={styles.quantitySelectorContainer}>

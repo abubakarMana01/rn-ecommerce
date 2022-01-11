@@ -1,8 +1,10 @@
+import AnimatedLottieView from 'lottie-react-native';
 import React, {useEffect, useState} from 'react';
 import {RefreshControl, ScrollView, StyleSheet, Text, View} from 'react-native';
 
 import {
   BottomTabsScreen,
+  Button,
   Categories,
   HomeHeader,
   Products,
@@ -12,9 +14,11 @@ import {colors} from '../constants';
 export default function Home() {
   const [products, setProducts] = useState<{}[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [fetchError, setFetchError] = useState(false);
 
   async function fetchProducts() {
     try {
+      setFetchError(false);
       setIsLoading(true);
       const res = await fetch('https://fakestoreapi.com/products');
       const data = await res.json();
@@ -22,6 +26,7 @@ export default function Home() {
       setIsLoading(false);
     } catch (err: any) {
       setIsLoading(false);
+      setFetchError(true);
       console.log(err.message);
     }
   }
@@ -49,12 +54,22 @@ export default function Home() {
 
         <Categories />
 
-        <Products
-          products={products}
-          isLoading={isLoading}
-          setIsLoading={setIsLoading}
-          fetchProducts={fetchProducts}
-        />
+        {fetchError ? (
+          <View style={styles.errorContainer}>
+            <AnimatedLottieView
+              source={require('../assets/animations/scanner.json')}
+              autoPlay
+              style={styles.lottie}
+              loop
+            />
+            <Text style={styles.error}>
+              Failed to fetch items. Check your internet connection
+            </Text>
+            <Button title="Refresh" onPress={() => console.log('Refresh')} />
+          </View>
+        ) : (
+          <Products products={products} isLoading={isLoading} />
+        )}
       </ScrollView>
     </BottomTabsScreen>
   );
@@ -74,5 +89,24 @@ const styles = StyleSheet.create({
     fontSize: 32,
     color: colors.darkgray,
   },
-  scrollView: {height: '100%'},
+  scrollView: {
+    height: '100%',
+  },
+  errorContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  error: {
+    textAlign: 'center',
+    color: colors.primary,
+    fontSize: 20,
+    marginBottom: 10,
+    fontWeight: '600',
+  },
+  lottie: {
+    width: 100,
+    height: 100,
+  },
 });

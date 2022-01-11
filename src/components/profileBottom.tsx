@@ -6,8 +6,14 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import {colors} from '../constants';
 import {useAuth} from '../hooks';
+import {
+  NavigationProp,
+  ParamListBase,
+  useNavigation,
+} from '@react-navigation/native';
 
 export default function ProfileBottom() {
+  const navigation = useNavigation<NavigationProp<ParamListBase>>();
   const {logout} = useAuth();
 
   return (
@@ -28,11 +34,13 @@ export default function ProfileBottom() {
         <Ionicons name="chevron-forward" size={24} color={colors.primary} />
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.item}>
+      <TouchableOpacity
+        style={styles.item}
+        onPress={() => navigation.navigate('Likes')}>
         <View style={styles.iconLeftContainer}>
-          <FontAwesome name="user" size={24} color={colors.primary} />
+          <FontAwesome name="heart" size={24} color={colors.primary} />
         </View>
-        <Text style={styles.itemTitle}>User management</Text>
+        <Text style={styles.itemTitle}>Saved items</Text>
         <Ionicons name="chevron-forward" size={24} color={colors.primary} />
       </TouchableOpacity>
 

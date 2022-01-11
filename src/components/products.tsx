@@ -7,14 +7,11 @@ import {useAuthContext} from '../contexts/authProvider';
 import SingleProduct from './singleProduct';
 
 interface ProductsProps {
-  isLoading: boolean;
-  setIsLoading: Function;
-  fetchProducts: () => void;
+  isLoading?: boolean;
   products: {}[];
-  setProducts?: () => void;
 }
 
-export default function Products({isLoading, products}: ProductsProps) {
+export default function Products({isLoading = false, products}: ProductsProps) {
   const authContext = useAuthContext();
   const [likedProducts, setLikedProducts] = useState([]);
 
