@@ -1,6 +1,6 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import {Cart, Likes, Pay, ProductDetails} from '../screens';
+import {Cart, Likes, Orders, Pay, ProductDetails} from '../screens';
 import BottomTabs from './bottomTabs';
 
 const Stack = createStackNavigator();
@@ -21,6 +21,13 @@ export default function StackNavigator() {
         options={{
           headerShown: true,
           headerTitle: 'Saved items',
+        }}
+      />
+      <Stack.Screen
+        component={Orders}
+        name="Orders"
+        options={{
+          headerShown: true,
         }}
       />
       <Stack.Screen name="Pay" component={Pay} />

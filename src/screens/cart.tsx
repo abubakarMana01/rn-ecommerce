@@ -33,6 +33,7 @@ export default function Cart() {
   const swipeFromLeftOpen = () => {
     navigation.navigate('Pay', {
       amount: total,
+      products: [...cart],
     });
   };
 
@@ -41,7 +42,7 @@ export default function Cart() {
       <CartHeader />
 
       <View style={styles.main}>
-        {cart.length === 0 ? (
+        {!cart.length ? (
           <View style={styles.noItemContainer}>
             <LottieView
               source={require('../assets/animations/no-item-cart.json')}

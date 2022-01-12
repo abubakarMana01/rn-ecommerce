@@ -26,11 +26,13 @@ export default function ProfileBottom() {
         <Ionicons name="chevron-forward" size={24} color={colors.primary} />
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.item}>
+      <TouchableOpacity
+        style={styles.item}
+        onPress={() => navigation.navigate('Orders')}>
         <View style={styles.iconLeftContainer}>
           <Ionicons name="card" size={24} color={colors.primary} />
         </View>
-        <Text style={styles.itemTitle}>Billing details</Text>
+        <Text style={styles.itemTitle}>Orders</Text>
         <Ionicons name="chevron-forward" size={24} color={colors.primary} />
       </TouchableOpacity>
 

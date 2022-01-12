@@ -13,20 +13,21 @@ export default function Pay({route}: {route: any}) {
   const navigation = useNavigation<NavigationProp<ParamListBase>>();
   const appContext = useAppContext();
 
+  const {amount, products} = route.params;
+  console.log(products);
+
   return (
     <View style={styles.container}>
       <Paystack
         paystackKey="pk_test_f828309267cfae96d727995b9249cbbb147c13c6"
-        amount={route.params.amount}
+        amount={amount}
         billingEmail="paystackwebview@something.com"
         activityIndicatorColor="green"
-        onCancel={e => {
-          // handle response here
+        onCancel={(e: {}) => {
           console.log(e);
           navigation.goBack();
         }}
-        onSuccess={res => {
-          // handle response here
+        onSuccess={(res: {}) => {
           console.log(res);
           appContext?.setCart([]);
           navigation.navigate('Home');

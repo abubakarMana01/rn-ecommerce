@@ -9,6 +9,7 @@ export {default as Loader} from './loading';
 export {default as NoInternet} from './noInternet';
 
 export {default as BottomTabsScreen} from './screen/bottomTabsScreen';
+export {default as RegularScreen} from './screen/regularScreen';
 export {default as ScreenBottom} from './screen/screenBottom';
 export {default as ScreenTop} from './screen/screenTop';
 export {default as Screen} from './screen/regularScreen';

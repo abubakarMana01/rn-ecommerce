@@ -7,7 +7,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import {colors} from '../constants';
-import {Home, Likes, Profile} from '../screens';
+import {Home, Profile} from '../screens';
 import {BottomTabsScreen, Loader} from '../components';
 
 const Tab = createBottomTabNavigator();

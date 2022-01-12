@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {Alert, FlatList, StyleSheet, View} from 'react-native';
+import {Alert, FlatList, RefreshControl, StyleSheet, View} from 'react-native';
 import {Loader} from '.';
 import {axios} from '../config';
+import {colors} from '../constants';
 import {useAuthContext} from '../contexts/authProvider';
 
 import SingleProduct from './singleProduct';
@@ -9,9 +10,14 @@ import SingleProduct from './singleProduct';
 interface ProductsProps {
   isLoading?: boolean;
   products: {}[];
+  onRefresh?: () => void;
 }
 
-export default function Products({isLoading = false, products}: ProductsProps) {
+export default function Products({
+  isLoading = false,
+  products,
+  onRefresh = () => {},
+}: ProductsProps) {
   const authContext = useAuthContext();
   const [likedProducts, setLikedProducts] = useState([]);
 
@@ -43,6 +49,13 @@ export default function Products({isLoading = false, products}: ProductsProps) {
           columnWrapperStyle={styles.flatListColumnWrapperStyle}
           numColumns={2}
           data={products}
+          refreshControl={
+            <RefreshControl
+              colors={[colors.brown]}
+              onRefresh={onRefresh}
+              refreshing={false}
+            />
+          }
           renderItem={({item}) => (
             <SingleProduct
               likedProducts={likedProducts}

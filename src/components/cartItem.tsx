@@ -32,7 +32,7 @@ export default function CartItem({product}: CartItemProps) {
       setCart(res.data);
       setCartTotal((prev: number) => prev - Number(product.price));
     } catch (err: any) {
-      setCart((prev: []) => [...prev, product]);
+      // setCart((prev: []) => [...prev, product]);
       console.log(err.response.data);
       console.log(err.message);
     }
