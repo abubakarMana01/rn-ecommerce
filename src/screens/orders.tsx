@@ -31,8 +31,8 @@ export default function Orders() {
       setIsLoading(false);
       setOrders(res.data);
     } catch (err: any) {
-      setFetchError(true);
       setIsLoading(false);
+      setFetchError(true);
       console.log(err.response.data.error);
       console.log(err.message);
     }
