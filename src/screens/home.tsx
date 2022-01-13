@@ -40,7 +40,6 @@ export default function Home() {
       <HomeHeader />
 
       <ScrollView
-        contentContainerStyle={styles.scrollView}
         refreshControl={
           <RefreshControl
             colors={[colors.brown]}
@@ -77,9 +76,6 @@ export default function Home() {
 }
 
 const styles = StyleSheet.create({
-  scrollView: {
-    flex: 1,
-  },
   promoContainer: {
     paddingHorizontal: 15,
     paddingVertical: 20,
