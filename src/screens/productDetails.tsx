@@ -1,13 +1,17 @@
-import React from 'react';
+/* eslint-disable react-native/no-inline-styles */
+import React, {useRef} from 'react';
 import {
   Image,
   ScrollView,
   StyleSheet,
   Text,
   ToastAndroid,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import {ParamListBase, RouteProp, useRoute} from '@react-navigation/native';
+import BottomSheet from 'reanimated-bottom-sheet';
+import Animated from 'react-native-reanimated';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import {
@@ -29,6 +33,8 @@ interface RouteParamsType {
 
 export default function ProductDetails() {
   const authContext = useAuthContext();
+  const sheetRef = useRef<any>(null);
+  const fall = new Animated.Value(1);
 
   const route = useRoute<RouteProp<ParamListBase, string>>();
   const {product, isLiked, setIsLiked}: any | RouteParamsType = route.params;
@@ -51,61 +57,85 @@ export default function ProductDetails() {
     }
   };
 
+  const renderSheetHeader = () => (
+    <View style={styles.sheetHeader}>
+      <View style={styles.sheetPanelHeader}>
+        <View style={styles.sheetPanelHandle} />
+      </View>
+    </View>
+  );
+
+  const renderSheetContent = () => (
+    <View style={styles.sheetWrapper}>{renderSheetHeader()}</View>
+  );
+
   return (
     <>
-      <ScreenTop>
-        <ProductDetailsHeader isLiked={isLiked} setIsLiked={setIsLiked} />
+      <TouchableOpacity
+        activeOpacity={1}
+        style={{flex: 1}}
+        onPress={() => sheetRef?.current?.snapTo(1)}>
+        <ScreenTop>
+          <ProductDetailsHeader isLiked={isLiked} setIsLiked={setIsLiked} />
 
-        <View style={styles.selectionContainer}>
-          <ScrollView showsVerticalScrollIndicator={false}>
-            <View style={styles.imageContainer}>
-              <Image
-                resizeMode="contain"
-                source={{uri: product.image}}
-                style={styles.imageSelect}
-              />
-            </View>
-            <View style={styles.imageContainer}>
-              <Image
-                resizeMode="contain"
-                source={{uri: product.image}}
-                style={styles.imageSelect}
-              />
-            </View>
-            <View
-              style={[
-                styles.imageContainer,
-                // eslint-disable-next-line react-native/no-inline-styles
-                {borderColor: colors.brown, borderWidth: 1},
-              ]}>
-              <Image
-                resizeMode="contain"
-                source={{uri: product.image}}
-                style={styles.imageSelect}
-              />
-            </View>
-            <View style={styles.imageContainer}>
-              <Image
-                resizeMode="contain"
-                source={{uri: product.image}}
-                style={styles.imageSelect}
-              />
-            </View>
-          </ScrollView>
-          <MaterialCommunityIcons
-            style={styles.selectScrollIcon}
-            name="chevron-up"
-            size={30}
-            color={colors.darkgray}
+          <View style={styles.selectionContainer}>
+            <ScrollView showsVerticalScrollIndicator={false}>
+              <View style={styles.imageContainer}>
+                <Image
+                  resizeMode="contain"
+                  source={{uri: product.image}}
+                  style={styles.imageSelect}
+                />
+              </View>
+              <View style={styles.imageContainer}>
+                <Image
+                  resizeMode="contain"
+                  source={{uri: product.image}}
+                  style={styles.imageSelect}
+                />
+              </View>
+              <View
+                style={[
+                  styles.imageContainer,
+                  {borderColor: colors.brown, borderWidth: 1},
+                ]}>
+                <Image
+                  resizeMode="contain"
+                  source={{uri: product.image}}
+                  style={styles.imageSelect}
+                />
+              </View>
+              <View style={styles.imageContainer}>
+                <Image
+                  resizeMode="contain"
+                  source={{uri: product.image}}
+                  style={styles.imageSelect}
+                />
+              </View>
+            </ScrollView>
+            <MaterialCommunityIcons
+              style={styles.selectScrollIcon}
+              name="chevron-up"
+              size={30}
+              color={colors.darkgray}
+            />
+          </View>
+
+          <Image
+            resizeMode="contain"
+            source={{uri: product.image}}
+            style={styles.image}
           />
-        </View>
 
-        <Image
-          resizeMode="contain"
-          source={{uri: product.image}}
-          style={styles.image}
-        />
-      </ScreenTop>
+          <TouchableOpacity
+            style={styles.viewDetailsContainer}
+            onPress={() => sheetRef?.current?.snapTo(0)}>
+            <MaterialCommunityIcons name="chevron-double-up" size={24} />
+            <Text style={styles.viewDetailsText}>Tap to see details</Text>
+          </TouchableOpacity>
+        </ScreenTop>
+      </TouchableOpacity>
+
       <ScreenBottom>
         <View style={styles.priceContainer}>
           <Text style={styles.subTotal}>Sub total</Text>
@@ -113,6 +143,16 @@ export default function ProductDetails() {
         </View>
         <Button title="Add to cart" onPress={() => handleAddToCart()} />
       </ScreenBottom>
+
+      <BottomSheet
+        ref={sheetRef}
+        snapPoints={[400, 0]}
+        initialSnap={1}
+        renderContent={renderSheetContent}
+        callbackNode={fall}
+        borderRadius={20}
+        enabledGestureInteraction
+      />
     </>
   );
 }
@@ -160,5 +200,35 @@ const styles = StyleSheet.create({
   },
   selectScrollIcon: {
     marginTop: 10,
+  },
+
+  viewDetailsContainer: {
+    alignSelf: 'center',
+    position: 'absolute',
+    bottom: 10,
+    alignItems: 'center',
+    zIndex: 10,
+  },
+  viewDetailsText: {
+    fontSize: 16,
+    color: colors.darkgray,
+  },
+
+  sheetWrapper: {
+    backgroundColor: colors.primary,
+    height: 400,
+  },
+  sheetHeader: {
+    backgroundColor: colors.primary,
+    paddingVertical: 20,
+  },
+  sheetPanelHeader: {
+    alignItems: 'center',
+  },
+  sheetPanelHandle: {
+    width: 40,
+    height: 5,
+    borderRadius: 4,
+    backgroundColor: colors.lightGray,
   },
 });

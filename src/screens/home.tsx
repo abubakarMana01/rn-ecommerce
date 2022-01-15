@@ -90,7 +90,6 @@ const styles = StyleSheet.create({
     color: colors.darkgray,
   },
   errorContainer: {
-    top: -50,
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
