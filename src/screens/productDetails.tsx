@@ -66,9 +66,20 @@ export default function ProductDetails() {
   );
 
   const renderSheetContent = () => (
-    <View style={styles.sheetWrapper}>{renderSheetHeader()}</View>
-  );
+    <View style={styles.sheetWrapper}>
+      <Text style={styles.sheetProductCategory}>{product.category}</Text>
+      <Text style={styles.sheetProductTitle}>{product.title}</Text>
+      <Text style={styles.sheetProductDescription}>{product.description}</Text>
 
+      <View style={styles.sheetRatingContainer}>
+        <MaterialCommunityIcons name="star" color={colors.brown} size={35} />
+        <Text style={styles.sheetRating}>
+          {product.rating.rate}
+          <Text style={styles.sheetRatingCount}>({product.rating.count})</Text>
+        </Text>
+      </View>
+    </View>
+  );
   return (
     <>
       <TouchableOpacity
@@ -148,10 +159,9 @@ export default function ProductDetails() {
         ref={sheetRef}
         snapPoints={[400, 0]}
         initialSnap={1}
+        renderHeader={renderSheetHeader}
         renderContent={renderSheetContent}
         callbackNode={fall}
-        borderRadius={20}
-        enabledGestureInteraction
       />
     </>
   );
@@ -184,8 +194,12 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
   },
   image: {
-    height: '100%',
-    width: '100%',
+    marginTop: 'auto',
+    marginBottom: 'auto',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    height: '70%',
+    width: '90%',
   },
   imageContainer: {
     width: 55,
@@ -216,11 +230,15 @@ const styles = StyleSheet.create({
 
   sheetWrapper: {
     backgroundColor: colors.primary,
-    height: 400,
+    height: 600,
+    paddingHorizontal: 15,
+    paddingTop: 10,
   },
   sheetHeader: {
     backgroundColor: colors.primary,
     paddingVertical: 20,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 30,
   },
   sheetPanelHeader: {
     alignItems: 'center',
@@ -230,5 +248,36 @@ const styles = StyleSheet.create({
     height: 5,
     borderRadius: 4,
     backgroundColor: colors.lightGray,
+  },
+  sheetProductCategory: {
+    marginBottom: 5,
+    fontSize: 16,
+    color: colors.gray,
+    textTransform: 'capitalize',
+  },
+  sheetProductTitle: {
+    color: colors.white,
+    fontSize: 24,
+    fontWeight: '700',
+  },
+  sheetProductDescription: {
+    color: colors.lightGray,
+    fontSize: 16,
+    marginTop: 10,
+  },
+  sheetRatingContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  sheetRating: {
+    color: colors.white,
+    marginLeft: 5,
+    fontSize: 20,
+    fontWeight: '600',
+  },
+  sheetRatingCount: {
+    color: colors.gray,
+    fontSize: 14,
   },
 });
