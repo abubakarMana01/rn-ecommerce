@@ -23,6 +23,7 @@ export default function SingleProduct({
   product,
   likedProducts,
   setLikedProducts,
+  color,
 }: any) {
   const navigation: NavigationProp<ParamListBase> = useNavigation();
   const authContext = useAuthContext();
@@ -104,7 +105,7 @@ export default function SingleProduct({
 
       <View style={styles.details}>
         <Text numberOfLines={1} style={styles.title}>
-          {product.title}
+          {color} {product.title}
         </Text>
         <Text style={styles.price}>₦{(product.price * 413).toFixed(2)}</Text>
       </View>

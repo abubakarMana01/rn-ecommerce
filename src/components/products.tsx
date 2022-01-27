@@ -21,6 +21,29 @@ export default function Products({
   const authContext = useAuthContext();
   const [likedProducts, setLikedProducts] = useState([]);
 
+  const itemColors = [
+    'Blue Jean',
+    'Black & White',
+    'Blue',
+    'Ash',
+    'Silver',
+    'Silver',
+    'Silver',
+    'Gold',
+    'Black',
+    'Black',
+    'Black',
+    'Black',
+    'Black',
+    'Black',
+    'Purple',
+    'Black',
+    'Blue Jean',
+    'White',
+    'Red',
+    'Violet',
+  ];
+
   useEffect(() => {
     (async function () {
       try {
@@ -56,13 +79,16 @@ export default function Products({
               refreshing={false}
             />
           }
-          renderItem={({item}) => (
-            <SingleProduct
-              likedProducts={likedProducts}
-              setLikedProducts={setLikedProducts}
-              product={item}
-            />
-          )}
+          renderItem={({item, index}) => {
+            return (
+              <SingleProduct
+                color={itemColors[index]}
+                likedProducts={likedProducts}
+                setLikedProducts={setLikedProducts}
+                product={item}
+              />
+            );
+          }}
         />
       )}
     </View>
